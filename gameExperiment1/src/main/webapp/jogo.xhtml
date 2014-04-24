@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+	  xmlns:jsflot="http://www.jsflot.org/taglib/jsflot"
+      >
+      
+    <f:metadata>
+		<f:event type="preRenderView" listener="#{jogoController.init}"/>
+	</f:metadata>
+	
+    <h:head>
+    	<title>Bot Battle</title>
+        <h:outputStylesheet>
+            .panel {
+                vertical-align: top;
+            }       
+        </h:outputStylesheet>    	
+    </h:head>
+ 
+    <h:body>
+        <rich:messages globalOnly="true" />
+        <h:panelGrid id="panelGridJogadores" columns="2">
+            <rich:dataTable value="#{jogoController.player.attributesAsList}" var="p">
+                <f:facet name="header">
+                    <h:outputText value="Jogador" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">Nome</f:facet>
+                    <h:outputText value="#{p.description}"/>
+                </rich:column>
+                <rich:column >
+                    <f:facet name="header">Valor</f:facet>
+                        <h:outputText value="#{p.value}"/>
+                </rich:column>
+            </rich:dataTable> 
+            <rich:dataTable value="#{jogoController.computer.attributesAsList}" var="c">
+                <f:facet name="header">
+                    <h:outputText value="Computador" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">Nome</f:facet>
+                    <h:outputText value="#{c.description}"/>
+                </rich:column>
+                <rich:column >
+                    <f:facet name="header">Valor</f:facet>
+                        <h:outputText value="#{c.value}"/>
+                </rich:column>
+            </rich:dataTable>             
+	    </h:panelGrid>  
+        <rich:panel id="panelStatus" header="Jogo">
+            <h:outputText value="#{jogoController.status}"/>
+        </rich:panel>	     
+        <rich:panel id="panelJogar" header="Jogar">        
+            <h:form id="jogar">
+                <h:panelGrid id="panelGridJogar" columns="3">
+                    <h:outputText value= "Acao :"/> 
+                    <h:selectOneMenu id="acao" value="#{jogoController.action}" required="true">
+                        <f:selectItems value="#{jogoController.actionsAsSelectItem}" />
+                    </h:selectOneMenu>
+                    <h:message for="acao" style="color:red" />
+                </h:panelGrid>
+                <h:panelGrid id="panelButtons" columns="3">
+                    <h:commandButton value="Jogar" action="#{jogoController.turn()}" disabled="#{not jogoController.gameActive}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h:commandButton value="Novo" action="#{jogoController.newGame()}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h:commandButton value="Voltar" action="index" immediate="true"/>
+                </h:panelGrid>
+            </h:form>
+        </rich:panel>    
+    </h:body>
+</html>

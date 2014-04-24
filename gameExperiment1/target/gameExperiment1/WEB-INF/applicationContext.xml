@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+ 
+ 	<!-- Database Configuration -->
+	<import resource="classes/config/spring/beans/DataSource.xml"/>
+	<import resource="classes/config/spring/beans/HibernateSessionFactory.xml"/>
+ 
+ 	<!-- beans --> 
+	<bean id="regraDAO" class="br.com.mineda.gameExperiment1.dao.RegraDAOImpl" >
+		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>   
+	
+	<bean id="regraBO" class="br.com.mineda.gameExperiment1.service.RegraBOImpl">
+		<property name="regraDAO" ref="regraDAO" />
+	</bean>
+	
+	<bean id="logDAO" class="br.com.mineda.gameExperiment1.dao.LogDAOImpl" >
+		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>	
+   	
+	<bean id="gameDAO" class="br.com.mineda.gameExperiment1.dao.GameDAOImpl" >
+		<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   	
+	<bean id="logBO" class="br.com.mineda.gameExperiment1.service.LogBOImpl">
+		<property name="logDAO" ref="logDAO" />
+		<property name="gameDAO" ref="gameDAO" />
+	</bean>   	   
+	
+	<bean id="gameBO" class="br.com.mineda.gameExperiment1.service.GameBOImpl">
+		<property name="logDAO" ref="logDAO" />
+		<property name="gameDAO" ref="gameDAO" />			
+	</bean>	   		   	
+			
+</beans>

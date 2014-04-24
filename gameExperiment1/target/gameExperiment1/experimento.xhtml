@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:jsflot="http://www.jsflot.org/taglib/jsflot"
+      >
+      
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{experimentoController.init}"/>
+    </f:metadata>
+    
+    <h:head>
+        <title>Bot Battle</title>
+        <h:outputStylesheet>
+            .panel {
+                vertical-align: top;
+            }       
+        </h:outputStylesheet>       
+    </h:head>
+ 
+    <h:body>
+        <rich:messages globalOnly="true" />
+        <rich:panel id="panelStatus" header="Jogo">
+            <h:outputText value="#{experimentoController.status}"/>
+        </rich:panel>        
+        <rich:panel id="panelExperimento" header="Experimento">        
+            <h:form id="experimento">
+                <h:panelGrid id="panelGridExperimento" columns="3">
+                    <h:outputLabel id="jogosLabel" for="jogos" value= "Quantidade de jogos: "/> 
+                    <h:inputText id="jogos" value="#{experimentoController.games}" required="true" />
+                    <h:message id="jogosMessage" for="jogos" style="color:red" />
+                    <h:outputLabel id="experimentoLabel" for="experimento" value= "Experimento: "/> 
+                    <h:selectOneMenu id="experimento" value="#{experimentoController.experimentNumber}" required="true">
+                        <f:selectItem itemLabel="Experimento 1 - RBS x CDMS" itemValue="0" />
+                        <f:selectItem itemLabel="Experimento 2 - RBS x Dynamyc Scripting" itemValue="1" />
+                        <f:selectItem itemLabel="Experimento 3 - Dynamyc Scripting x CDMS" itemValue="2" />
+                        <f:selectItem itemLabel="Experimento 4 - RBS Físico 1 x RBS longa distância 2" itemValue="3" />
+                        <f:selectItem itemLabel="Experimento 5 - RBS Físico 1 x RBS Físico 2" itemValue="4" />
+                        <f:selectItem itemLabel="Experimento 6 - RBS Físico 1 x RBS Defensivo" itemValue="5" />
+                        <f:selectItem itemLabel="Experimento 7 - RBS Longa Distância 1 x RBS longa distância 2" itemValue="6" />
+                        <f:selectItem itemLabel="Experimento 8 - RBS Longa Distância 1 x RBS Físico 2" itemValue="7" />
+                        <f:selectItem itemLabel="Experimento 9 - RBS Longa Distância 1 x RBS Defensivo" itemValue="8" />
+                        <f:selectItem itemLabel="Experimento 10 - Dynamyc Scripting x RBS longa distância 2" itemValue="9" />
+                        <f:selectItem itemLabel="Experimento 11 - Dynamyc Scripting x RBS Físico 2" itemValue="10" />
+                        <f:selectItem itemLabel="Experimento 12 - Dynamyc Scripting x RBS Defensivo" itemValue="11" />
+                        <f:selectItem itemLabel="Experimento 13 - Dynamyc Scripting x CDMS 2" itemValue="12" />
+                        <f:selectItem itemLabel="Experimento 14 - Dynamyc Scripting x RBS Físico 1" itemValue="13" />
+                        <f:selectItem itemLabel="Experimento 15 - Dynamyc Scripting x RBS Longa Distância 1" itemValue="14" />
+                        <f:selectItem itemLabel="Experimento 16 - RBS Físico 1 x RBS Físico 1" itemValue="15" />
+                        <f:selectItem itemLabel="Experimento 17 - RBS Físico 1 x RBS longa distância 1" itemValue="16" />
+                        <f:selectItem itemLabel="Experimento 18 - RBS Longa Distância 1 x RBS Físico 1" itemValue="17" />
+                        <f:selectItem itemLabel="Experimento 19 - RBS Longa Distância 1 x RBS longa distância 1" itemValue="18" />
+                    </h:selectOneMenu>
+                    <h:message id="experimentoMessage" for="experimento" style="color:red" />
+                </h:panelGrid>
+                <h:panelGrid id="panelButtons" columns="4">
+                    <h:commandButton value="Novo Experimento" action="#{experimentoController.newExperiment()}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h:commandButton value="Novo Jogo" action="#{experimentoController.newGame()}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h:commandButton value="Reiniciar" action="#{experimentoController.reset()}">
+                        <f:ajax execute="@form" render="@all" />
+                    </h:commandButton>
+                    <h:commandButton value="Voltar" action="index" immediate="true"/>
+                </h:panelGrid>
+            </h:form>
+        </rich:panel>    
+    </h:body>
+</html>

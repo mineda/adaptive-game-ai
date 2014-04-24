@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      >
+    <h:head>
+        <title>Bot Battle</title>
+    	<h:outputStylesheet library="css" name="table-style.css"  />
+    </h:head>
+ 
+    <h:body>
+    	<rich:panel id="panelRegras" header="Regras">
+			<rich:dataTable value="#{regraController.regras}" var="r">
+			    <f:facet name="header">
+			        <h:outputText value="Regras" />
+			    </f:facet>
+			    <rich:column>
+			        <f:facet name="header">Id</f:facet>
+			            <h:outputText value="#{r.id}"/>
+			    </rich:column>
+			    <rich:column >
+			        <f:facet name="header">Nome</f:facet>
+			            <h:outputText value="#{r.nome}"/>
+			    </rich:column>
+			    <rich:column>
+			        <f:facet name="header">Cláusula</f:facet>
+			            <h:outputText value="#{r.clausula}"/>
+			    </rich:column>
+			    <rich:column>
+			        <f:facet name="header">Ação</f:facet>
+			            <h:outputText value="#{r.acao}"/>
+			    </rich:column>		    
+			</rich:dataTable> 
+		</rich:panel>   
+    	<rich:panel id="panelAdicionarRegras" header="Adicionar nova regra">		
+	 		<h:form id="adicionarNovaRegraForm">
+	 			<h:panelGrid id="panelGridAdicionarNovasRegras" columns="3">
+					<h:outputText value= "Nome :"/> 
+					<h:inputText id="nome" value="#{regraController.regra.nome}" 
+						size="20" required="true"
+						label="Nome" >
+					</h:inputText>
+					<h:message for="nome" style="color:red" />
+					<h:outputText value= "Cláusula :"/>
+					<h:inputTextarea id="clausula" value="#{regraController.regra.clausula}" 
+						cols="30" rows="10" required="true"
+						label="Cláusula" >
+					</h:inputTextarea>
+					<h:message for="clausula" style="color:red" />
+					<h:outputText value= "Ação :"/>
+					<h:inputTextarea id="acao" value="#{regraController.regra.acao}" 
+						cols="30" rows="10" required="true"
+						label="Ação" >
+					</h:inputTextarea>
+					<h:message for="acao" style="color:red" />				
+				</h:panelGrid>
+				<h:commandButton value="Adicionar" action="#{regraController.adicionarRegra()}" />
+	 		</h:form>
+	 	</rich:panel>
+    </h:body>
+</html>

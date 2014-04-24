@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:jsflot="http://www.jsflot.org/taglib/jsflot"
+      >
+      
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{botBattleController.init}"/>
+    </f:metadata>
+    
+    <h:head>
+        <title>Bot Battle</title>
+        <h:outputStylesheet>
+            .panel {
+                vertical-align: top;
+            }       
+        </h:outputStylesheet>       
+    </h:head>
+ 
+    <h:body>
+        <rich:messages globalOnly="true" />
+        <h:panelGrid id="tela" columns="1">
+            <rich:panel id="panelTela" header="Bot Battle 0.1">  
+                <h:graphicImage value="/images/background.png" style="width:750px;"/>
+                <h:graphicImage value="/images/robot1#{botBattleController.playerAction}.png" style="height:100px; position:absolute; top:300px; left:#{330-botBattleController.playerPosition*13}px"/>
+                <h:graphicImage value="/images/robot2#{botBattleController.computerAction}.png" style="height:100px; position:absolute; top:297px; left:#{390+botBattleController.computerPosition*13}px"/>
+                <h:outputText value="#{botBattleController.playerAction}" style="color:white; position:absolute; top:135px; left:60px"/>
+                <h:outputText value="#{botBattleController.computerAction}" style="color:white; position:absolute; top:135px; left:730px"/>
+                <h:outputText value="Distância: #{botBattleController.playerPosition+botBattleController.computerPosition}" style="color:white; position:absolute; top:50px; left:60px"/>
+                <h:outputText value="Errou" rendered="#{botBattleController.player.attributes.ERO.value > 0}" style="color:red; position:absolute; top:135px; left:83px"/>
+                <h:outputText value="Errou" rendered="#{botBattleController.computer.attributes.ERO.value > 0}" style="color:red; position:absolute; top:135px; left:700px"/>
+                <h:outputText value="Preso" rendered="#{botBattleController.player.attributes.PRO.value > 0}" style="color:white; position:absolute; top:150px; left:60px"/>
+                <h:outputText value="Preso" rendered="#{botBattleController.computer.attributes.PRO.value > 0}" style="color:white; position:absolute; top:150px; left:723px"/>
+                <h:outputText value="Atordoado" rendered="#{botBattleController.player.attributes.ATO.value > 0}" style="color:white; position:absolute; top:165px; left:60px"/>
+                <h:outputText value="Atordoado" rendered="#{botBattleController.computer.attributes.ATO.value > 0}" style="color:white; position:absolute; top:165px; left:700px"/>
+                <h:outputText value="Eletrocutado" rendered="#{botBattleController.player.attributes.ELO.value > 0}" style="color:white; position:absolute; top:180px; left:60px"/>
+                <h:outputText value="Eletrocutado" rendered="#{botBattleController.computer.attributes.ELO.value > 0}" style="color:white; position:absolute; top:180px; left:690px"/>
+                <h:graphicImage value="/images/cell.png" style="height:20px; position:absolute; top:113px; left:60px"/>
+                <h:outputText value="#{botBattleController.player.attributes.ENE.value}" style="color:white; position:absolute; top:115px; left:70px"/>
+                <h:graphicImage value="/images/cell.png" style="height:20px; position:absolute; top:113px; left:750px"/>
+                <h:outputText value="#{botBattleController.computer.attributes.ENE.value}" style="color:white; position:absolute; top:115px; left:720px"/>
+                <h:graphicImage value="/images/charged.png" rendered="#{botBattleController.player.attributes.CAO.value > 0}" style="height:20px; position:absolute; top:113px; left:100px"/>
+                <h:graphicImage value="/images/charged.png" rendered="#{botBattleController.computer.attributes.CAO.value > 0}" style="height:20px; position:absolute; top:113px; left:690px"/>
+                <h:graphicImage value="/images/life.png" rendered="#{botBattleController.player.attributes.SAU.value > 0}" style="height:20px; width:#{botBattleController.player.attributes.SAU.value*0.3}px; position:absolute; top:70px; left:60px"/>
+                <h:graphicImage value="/images/life.png" rendered="#{botBattleController.computer.attributes.SAU.value > 0}" style="height:20px; width:#{botBattleController.computer.attributes.SAU.value*0.3}px; position:absolute; top:70px; left:#{760-botBattleController.computer.attributes.SAU.value*0.3}px"/>
+                <c:forEach var="i" begin="1" end="#{botBattleController.player.attributes.COO.value}">
+                    <h:graphicImage value="/images/concentration.png" style="height:7px; position:absolute; top:100px; left:#{60+(i-1)*9}px"/>
+                </c:forEach>
+                <c:forEach var="i" begin="1" end="#{botBattleController.computer.attributes.COO.value}">
+                    <h:graphicImage value="/images/concentration.png" style="height:7px; position:absolute; top:100px; left:#{750-(i-1)*9}px"/>
+                </c:forEach>
+            </rich:panel>
+            <rich:panel id="panelJogar" header="Jogar">        
+                <h:form id="jogar">
+                    <h:panelGrid id="panelButtons" columns="3">
+                        <h:outputLabel id="acaoLabel" for="acao" value="Ação: "/>
+                        <rich:select id="acao" required="false" value="#{botBattleController.playerAction}">
+                            <f:selectItem itemLabel="Nada" itemValue="" />
+                            <f:selectItems value="#{botBattleController.actionsAsSelectItem}" />
+                        </rich:select>
+                        <h:message id="acaoMessage" for="acao" style="color:red" />
+                        <h:commandButton value="Jogar" action="#{botBattleController.turn()}" disabled="#{not botBattleController.gameActive}">
+                            <f:ajax execute="@form" render="@all" />
+                        </h:commandButton>
+                        <h:commandButton value="Novo" action="#{botBattleController.newGame()}">
+                            <f:ajax execute="@form" render="@all" />
+                        </h:commandButton>
+                        <h:commandButton value="Voltar" action="index" immediate="true"/>
+                    </h:panelGrid>
+                </h:form>
+            </rich:panel>
+            <rich:panel id="panelStatus" header="Status">
+                <h:outputText value="#{botBattleController.status}"/>
+            </rich:panel>        
+        </h:panelGrid>
+    </h:body>
+</html>
